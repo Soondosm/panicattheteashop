@@ -18,6 +18,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	void PullPawn(); // pull into planet
+	bool bIsPawnOnPlanet; // initializing to false
 
 public:	
 	// Called every frame

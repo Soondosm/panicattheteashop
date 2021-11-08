@@ -7,10 +7,11 @@
 #include "CollidingPawnMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "CollidingPawn.h"
-#include "CollidingPawn.h"
+#include "PlanetOne.h"
 
 #include "Animation/AnimInstanceProxy.h"
 
+// APlanetOne* OurFirstPlanet;
 // Sets default values
 ACollidingPawn::ACollidingPawn()
 {
@@ -42,6 +43,7 @@ ACollidingPawn::ACollidingPawn()
 	OurParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("MovementParticles"));
 	OurParticleSystem->SetupAttachment(SphereVisual);
 	OurParticleSystem->bAutoActivate = false;
+	bIsPawnOnPlanet = false;
 	OurParticleSystem->SetRelativeLocation(FVector(-20.0f, 0.0f, 20.0f));
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleAsset(TEXT("/Game/StarterContent/Particles/P_Fire.P_Fire"));
 	if(ParticleAsset.Succeeded())
@@ -74,6 +76,10 @@ ACollidingPawn::ACollidingPawn()
 	// create instance of movement component, tell it to update root
 	OurMovementComponent = CreateDefaultSubobject<UCollidingPawnMovementComponent>(TEXT("CustomMovementComponent"));
 	OurMovementComponent->UpdatedComponent = RootComponent;
+
+	// create instance of planet component????
+	// OurFirstPlanet = CreateDefaultSubobject<APlanetOne>(TEXT("FirstPlanetText"));
+	
 }
 
 // Called when the game starts or when spawned
@@ -87,8 +93,12 @@ void ACollidingPawn::BeginPlay()
 void ACollidingPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
-	OurMovementComponent->AddInputVector(GetGravityDirection()); // test???
+	if(!bIsPawnOnPlanet)
+	{
+		PullPawn();
+	}
+	// OurMovementComponent->AddInputVector(GetGravityDirection());
+	// OurMovementComponent->AddInputVector(GetActorLocation()); // test???
 	// UE_LOG(LogTemp, Warning, TEXT("Your message, %f"), GetGravityDirection());
 }
 
@@ -144,7 +154,7 @@ void ACollidingPawn::ParticleToggle()
 }
 
 
-UPawnMovementComponent* ACollidingPawn::GetMovementComponent() const
+void ACollidingPawn::PullPawn()
 {
-	return OurMovementComponent;
+	OurMovementComponent->AddInputVector(GetActorLocation());
 }
