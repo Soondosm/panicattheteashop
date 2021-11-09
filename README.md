@@ -3,10 +3,10 @@ experimenting with UE4 in only C++ (wherever possible). At the time of writing,
 I've created a basic sphere planetary body that pulls a player-controlled pawn into it.
 Pawn moves with WASD keys, and spacebar key triggers a fire particle effect.
 
-TO-DOS:
--Create multiple scenes
--Add more planetary bodies character can jump between
--Add Dialogue
--Create complex interactable objects
--Update graphics and sound
+<b>TO-DOS:</b> \n
+-Create multiple scenes \n
+-Add more planetary bodies character can jump between \n
+-Add Dialogue \n
+-Create complex interactable objects \n
+-Update graphics and sound \n
 -add multiplayer functionality
