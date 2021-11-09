@@ -6,7 +6,7 @@ Pawn moves with WASD keys, and spacebar key triggers a fire particle effect.
 <b>TO-DOS:</b> <br>
 -Create multiple scenes <br>
 -Add more planetary bodies character can jump between <br>
--Add Dialogue \n
--Create complex interactable objects \n
--Update graphics and sound \n
+-Add Dialogue <br>
+-Create complex interactable objects <br>
+-Update graphics and sound <br>
 -add multiplayer functionality
