@@ -17,6 +17,7 @@ class PANICATTHETEASHOP_API UCollidingPawnMovementComponent : public UPawnMoveme
 	public:
 		virtual void TickComponent(
 		float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+		// virtual void FindAllActors(UWorld* World, TArray<T*>& Out);
 };
 
 

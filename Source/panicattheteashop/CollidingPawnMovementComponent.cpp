@@ -1,5 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "CollidingPawnMovementComponent.h"
+#include "EngineUtils.h"
+#include "PlanetOne.h"
+#include "ToolBuilderUtil.h"
+#include "Kismet/GameplayStatics.h"
 
 void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
@@ -11,8 +15,14 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
 		return;
 	}
 
+	TArray<APlanetOne*> Planets;
+	// ToolBuilderUtil::FindAllActors(GetWorld(), Planets);
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlanetOne::StaticClass(), FoundActors);
+	UE_LOG(LogTemp, Warning, TEXT("My Class is: %s"), *FoundActors[0]->GetFName().ToString());
 	// Get (then clear) movement vector we set in ACollidingPawn::Tick
-	FVector DesiredMovementThisFrame = ConsumeInputVector().GetClampedToMaxSize(1.0f) * DeltaTime * 150.0f;
+	FVector PlanetLoc = (FoundActors[0]->GetActorLocation() - GetActorLocation()).GetClampedToMaxSize(1.0f) + ConsumeInputVector();
+	FVector DesiredMovementThisFrame = PlanetLoc.GetClampedToMaxSize(1.0f) * DeltaTime * 150.0f;
 	if(!DesiredMovementThisFrame.IsNearlyZero())
 	{
 		FHitResult Hit;
@@ -25,5 +35,13 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
 		}
 	}
 }
-#include "CollidingPawnMovementComponent.h"
+
+template<typename T>
+void FindAllActors(UWorld* World, TArray<T*>& Out)
+{
+	for (TActorIterator<T> It(World); It; ++It)
+	{
+		Out.Add(*It);
+	}
+}
 

@@ -14,12 +14,16 @@ class PANICATTHETEASHOP_API ACollidingPawn : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ACollidingPawn();
+	void SetbIsOnPlanet(bool value);
+	void ReceivePlanetLocation(FVector loc); // pull into planet
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	void PullPawn(); // pull into planet
+	
 	bool bIsPawnOnPlanet; // initializing to false
+	FVector PlanetLocation; // this is where our current planet is
+	class USPhereComponent* SphereComp;
 
 public:	
 	// Called every frame
@@ -28,7 +32,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	virtual UPawnMovementComponent* GetMovementComponent() const override; //overriding getmovementcomponent function to return custom pawn movement component
+	// virtual UCollidingPawnMovementComponent* GetMovementComponent() const override; //overriding getmovementcomponent function to return custom pawn movement component
 
 	UPROPERTY()
 	class UParticleSystemComponent* OurParticleSystem; // keeps track of a particle system component

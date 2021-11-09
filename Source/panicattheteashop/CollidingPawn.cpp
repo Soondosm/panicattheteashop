@@ -8,6 +8,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "CollidingPawn.h"
 #include "PlanetOne.h"
+#include "Math/Vector.h"
+#define printFString(text, fstring) if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString::Printf(TEXT(text), fstring))
+#include "UObject/ObjectMacros.h"
 
 #include "Animation/AnimInstanceProxy.h"
 
@@ -22,6 +25,11 @@ ACollidingPawn::ACollidingPawn()
 	RootComponent = SphereComponent;
 	SphereComponent->InitSphereRadius(40.0f);
 	SphereComponent->SetCollisionProfileName(TEXT("Pawn"));
+
+	// SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
+	// // SphereComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
+	// SphereComp->SetSphereRadius(200);
+	
 	/* create and attach visible sphere from static mesh asset with radius of 50.
 	 * This does not line up with 40 radius sphere component we created, so we
 	 * scale the asset down to 80%. Also move down by 40 units to have center line up w center of sphere comp.
@@ -76,9 +84,6 @@ ACollidingPawn::ACollidingPawn()
 	// create instance of movement component, tell it to update root
 	OurMovementComponent = CreateDefaultSubobject<UCollidingPawnMovementComponent>(TEXT("CustomMovementComponent"));
 	OurMovementComponent->UpdatedComponent = RootComponent;
-
-	// create instance of planet component????
-	// OurFirstPlanet = CreateDefaultSubobject<APlanetOne>(TEXT("FirstPlanetText"));
 	
 }
 
@@ -93,10 +98,16 @@ void ACollidingPawn::BeginPlay()
 void ACollidingPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if(!bIsPawnOnPlanet)
-	{
-		PullPawn();
-	}
+	// if(!bIsPawnOnPlanet)
+	// {
+		// if(PlanetLocation != NULL)
+		// {
+			// FVector NewVec = PlanetLocation - GetActorLocation();
+			// OurMovementComponent->AddInputVector(NewVec);
+			// UE_LOG(LogTemp, Warning, TEXT("My Variable Vector is: %s"), *NewVec.ToString());
+		
+		// }
+	// }
 	// OurMovementComponent->AddInputVector(GetGravityDirection());
 	// OurMovementComponent->AddInputVector(GetActorLocation()); // test???
 	// UE_LOG(LogTemp, Warning, TEXT("Your message, %f"), GetGravityDirection());
@@ -153,8 +164,12 @@ void ACollidingPawn::ParticleToggle()
 	}
 }
 
-
-void ACollidingPawn::PullPawn()
+void ACollidingPawn::SetbIsOnPlanet(bool value)
 {
-	OurMovementComponent->AddInputVector(GetActorLocation());
+	bIsPawnOnPlanet = value;
+}
+
+void ACollidingPawn::ReceivePlanetLocation(FVector loc)
+{
+	PlanetLocation = loc;
 }
